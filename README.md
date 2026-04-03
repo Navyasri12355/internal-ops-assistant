@@ -1,4 +1,4 @@
-# KnowledgeAgent — RAG-Powered Internal AI for Startup Scalability
+# KnowledgeAgent - RAG-Powered Internal AI for Startup Scalability
 
 > *Automating Internal Operations: Prototyping a RAG-Driven AI Agent for Scalable Knowledge Management in High-Growth Startups*
 
@@ -18,7 +18,7 @@ This project investigates two interconnected research problems:
 
 ## What This Project Does
 
-KnowledgeAgent is a Retrieval-Augmented Generation (RAG) system that allows startup employees to ask natural language questions and receive accurate, cited answers sourced directly from internal documents — PDFs, Notion exports, Markdown wikis, HR policies, and more.
+KnowledgeAgent is a Retrieval-Augmented Generation (RAG) system that allows startup employees to ask natural language questions and receive accurate, cited answers sourced directly from internal documents - PDFs, Notion exports, Markdown wikis, HR policies, and more.
 
 Instead of a new hire pinging a senior engineer on Slack to ask *"what's our deployment process?"* or *"where's the leave policy?"*, they ask the agent. The agent retrieves the exact relevant chunk from your documentation and synthesizes a grounded answer — with a citation pointing back to the source document.
 
@@ -56,11 +56,11 @@ This solves a real, expensive problem: **as startups scale, knowledge retrieval 
 ```
 
 ### Data Flow
-- **Ingest** — Documents (PDFs, Markdown, Notion exports) are parsed, cleaned, and chunked  
-- **Embed** — Each chunk is converted to a vector embedding and stored in ChromaDB  
-- **Retrieve** — On user query, the top-k most semantically similar chunks are fetched  
-- **Generate** — The Gemma 4 model synthesizes an answer grounded only in the retrieved context  
-- **Cite** — The UI surfaces the source document + page/chunk for every answer  
+- **Ingest** - Documents (PDFs, Markdown, Notion exports) are parsed, cleaned, and chunked  
+- **Embed** - Each chunk is converted to a vector embedding and stored in ChromaDB  
+- **Retrieve** - On user query, the top-k most semantically similar chunks are fetched  
+- **Generate** - The Gemma 4 model synthesizes an answer grounded only in the retrieved context  
+- **Cite** - The UI surfaces the source document + page/chunk for every answer  
 
 ---
 
