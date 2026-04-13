@@ -2,6 +2,7 @@ import { Routes, Route, NavLink } from 'react-router-dom'
 import { MessageSquare, Upload, BarChart2 } from 'lucide-react'
 import ChatPage from './pages/ChatPage'
 import UploadPage from './pages/UploadPage'
+import StatsPage from './pages/StatsPage'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <nav className="flex flex-col gap-1">
           <NavItem to="/" icon={<MessageSquare size={16} />} label="Ask" end />
           <NavItem to="/upload" icon={<Upload size={16} />} label="Documents" />
+          <NavItem to="/stats" icon={<BarChart2 size={16} />} label="Stats" />
         </nav>
 
         <div className="mt-auto px-2 py-3 rounded-lg bg-surface-700 border border-surface-500">
@@ -30,6 +32,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<ChatPage />} />
           <Route path="/upload" element={<UploadPage />} />
+          <Route path="/stats" element={<StatsPage />} />
         </Routes>
       </main>
     </div>
