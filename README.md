@@ -1,4 +1,4 @@
-# KnowledgeAgent — RAG-Powered Internal AI for Startup Scalability
+# KnowledgeAgent - RAG-Powered Internal AI for Startup Scalability
 
 > *Automating Internal Operations: Prototyping a RAG-Driven AI Agent for Scalable Knowledge Management in High-Growth Startups*
 
