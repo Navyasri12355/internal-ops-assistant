@@ -19,7 +19,7 @@ import shutil
 
 from vector_store.chroma_client import ChromaStore
 from vector_store.embedder import Embedder
-from data_pipeline.ingestor import load_document, chunk_documents
+from data_pipeline.ingestor import load_document, chunk_documents, ingest_directory
 from rag_engine.chain import RAGChain
 
 
@@ -39,6 +39,27 @@ async def lifespan(app: FastAPI):
         collection_name=os.getenv("CHROMA_COLLECTION_NAME", "knowledge_base"),
     )
     rag_chain = RAGChain()
+
+    # Auto-ingest documents from ./docs/ if the store is empty
+    if store.count() == 0:
+        docs_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "..", "docs")
+        docs_dir = os.path.abspath(docs_dir)
+        if os.path.isdir(docs_dir):
+            print(f"\nIngesting documents from: {docs_dir}")
+            chunk_size = int(os.getenv("CHUNK_SIZE", 500))
+            chunk_overlap = int(os.getenv("CHUNK_OVERLAP", 50))
+            all_chunks = ingest_directory(docs_dir, chunk_size, chunk_overlap)
+            print(f"\nTotal chunks created: {len(all_chunks)}")
+
+            if all_chunks:
+                embeddings = embedder.embed([c["content"] for c in all_chunks])
+                count = store.upsert(all_chunks, embeddings)
+                print(f"Done. Stored {count} chunks.")
+            else:
+                print("No chunks created from documents.")
+        else:
+            print(f"Docs directory not found at {docs_dir}, skipping auto-ingest.")
+
     print(f"Ready. Vector store has {store.count()} chunks.")
     yield
     print("Shutting down.")

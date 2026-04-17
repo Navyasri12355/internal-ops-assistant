@@ -4,8 +4,13 @@ ChromaDB Client
 Wraps ChromaDB operations: create collection, upsert chunks, query by embedding.
 """
 
+import os
 import uuid
 from typing import List, Dict, Any, Optional
+
+# Disable ChromaDB telemetry before import to avoid
+# "capture() takes 1 positional argument but 3 were given" bug in 0.5.x
+os.environ["ANONYMIZED_TELEMETRY"] = "False"
 
 import chromadb
 from chromadb.config import Settings
