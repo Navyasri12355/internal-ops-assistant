@@ -46,13 +46,34 @@ def _ocr_page(page: fitz.Page, dpi: int = 300) -> str:
         Extracted text as a string (may be empty if OCR finds nothing).
     """
     if not OCR_AVAILABLE:
+        logger.warning(
+            "pytesseract or Pillow is not installed – OCR skipped. "
+            "Install them with: pip install pytesseract Pillow"
+        )
         return ""
-    zoom = dpi / 72  # 72 is the default PDF resolution
-    mat = fitz.Matrix(zoom, zoom)
-    pix = page.get_pixmap(matrix=mat, alpha=False)
-    img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-    text: str = pytesseract.image_to_string(img)
-    return text.strip()
+
+    try:
+        zoom = dpi / 72  # 72 is the default PDF resolution
+        mat = fitz.Matrix(zoom, zoom)
+        pix = page.get_pixmap(matrix=mat, alpha=False)
+        img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+        text: str = pytesseract.image_to_string(img)
+        return text.strip()
+    except pytesseract.TesseractNotFoundError:
+        logger.warning(
+            "Tesseract OCR engine is not installed or not found on PATH. "
+            "Scanned pages will be skipped. Install Tesseract from: "
+            "https://github.com/UB-Mannheim/tesseract/wiki (Windows) "
+            "or run 'sudo apt install tesseract-ocr' (Linux)."
+        )
+        return ""
+    except Exception as exc:
+        logger.warning(
+            "OCR failed for page: %s – skipping. Error: %s",
+            getattr(page, 'number', '?'),
+            exc,
+        )
+        return ""
 
 
 def load_pdf(filepath: str) -> List[Dict[str, Any]]:
